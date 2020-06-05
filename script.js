@@ -1,42 +1,32 @@
 const cards = document.querySelectorAll('.memory-card');
 
-let cardFlipped = false;
+let hasCardFlipped = false;
 let firstCard, secondCard;
 
 function flipCard() {
   this.classList.add('flip');
 
-  if (!cardFlipped) {
-    
-    cardFlipped = true;
+  if (!hasCardFlipped ) {
+    // first click
+    hasCardFlipped  = true;
     firstCard = this;
+  } else {
+    // second click
+    hasCardFlipped  = false;
+    secondCard = this;
 
-    return;
+    if (firstCard.dataset.framework === secondCard.dataset.framework) {
+      // if it matches
+      firstCard.removeEventListener('click', flipCard);
+      secondCard.removeEventListener('click', flipCard);
+    } else {
+      // if it doesn't match
+      setTimeout(() => {
+        firstCard.classList.remove('flip');
+        secondCard.classList.remove('flip');
+      }, 1500);
+    }
   }
-
-  
-  cardFlipped = false;
-  secondCard = this;
-
-  checkForMatch();
-}
-
-function checkForMatch() {
-  let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
-
-  isMatch ? disableCards() : unflipCards();
-}
-
-function disableCards() {
-  firstCard.removeEventListener('click', flipCard);
-  secondCard.removeEventListener('click', flipCard);
-}
-
-function unflipCards() {
-  setTimeout(() => {
-    firstCard.classList.remove('flip');
-    secondCard.classList.remove('flip');
-  }, 1500);
 }
 
 cards.forEach(card => card.addEventListener('click', flipCard));
