@@ -29,4 +29,11 @@ function flipCard() {
   }
 }
 
+(function shuffleCards() {
+  cards.forEach(card => {
+  let randomShuffle = Math.floor(Math.random() * 12);
+  card.style.order = randomShuffle;
+  });
+})()
+
 cards.forEach(card => card.addEventListener('click', flipCard));
